@@ -56,7 +56,12 @@
     <small *ngIf="email.errors && email.dirty" class="form-text text-muted">
       <span [hidden]="!email.errors.required">Email requis.</span>
       <span [hidden]="!email.errors.email">Entrez une adresse email valide.</span>
+      <span [hidden]="!email.errors.isEmailTaken">L'adresse email est déjà utilisée.</span>
     </small>
+
+    <!-- attente validation email -->
+    <div *ngIf="email.pending">Attente validation email ....</div>
+
   </div>
 
   <!-- erreur cross validator -->

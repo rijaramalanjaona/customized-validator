@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {isDateValidator} from '../../validators/is-date-validator';
 import {isProfessionalEmailValidator} from '../../validators/is-professional-email-validator';
+import {IsEmailTaken} from '../../validators/is-email-taken';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-user-form',
@@ -11,7 +13,7 @@ import {isProfessionalEmailValidator} from '../../validators/is-professional-ema
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private userService: UserService) { }
 
   ngOnInit() {
     this.userForm = this.fb.group({
@@ -25,10 +27,11 @@ export class UserFormComponent implements OnInit {
           Validators.maxLength(20),
           Validators.pattern('^[a-zA-Z0-9_-]*$')
         ]],
-        email: ['', [
-          Validators.required,
-          Validators.email
-        ]]
+        email: ['', {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [IsEmailTaken.validate(this.userService)],
+          updateOn: 'blur' // le moment où le validator doit être appelé
+        }]
       },
       {validators: isProfessionalEmailValidator}
     );
