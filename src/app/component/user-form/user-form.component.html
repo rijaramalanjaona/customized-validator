@@ -1,0 +1,33 @@
+<form
+  novalidate
+  [formGroup]="userForm"
+  (ngSubmit)="submit()">
+
+  <!-- registerDate -->
+  <div class="form-group">
+    <label for="registerDate">Register date (YYYY-MM-DD)</label>
+    <input
+      id="registerDate"
+      type="text"
+      formControlName="registerDate"
+      class="form-control" />
+
+    <!-- gestion message d'erreur -->
+    <small *ngIf="registerDate.errors && registerDate.dirty" class="form-text text-muted">
+      <span [hidden]="!registerDate.errors.required">Register date requis.</span>
+      <span [hidden]="!registerDate.errors.isDate">Entrez une date valide.</span>
+    </small>
+  </div>
+
+  <!-- bouton submit -->
+  <p class="text-center py-3">
+    <button
+      type="submit"
+      class="btn"
+      [disabled]="!userForm.valid"
+      [ngClass]="{'btn-success': userForm.valid, 'btn-default': !userForm.valid}">
+      Inscription
+    </button>
+  </p>
+
+</form>
